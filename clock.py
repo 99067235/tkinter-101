@@ -1,8 +1,8 @@
-from cgitb import text
 import tkinter as tk
+from datetime import datetime
 import time
-from tkinter.tix import TEXT
-from typing import Text
+import threading
+
 
 
 window = tk.Tk()
@@ -10,12 +10,7 @@ window.configure(bg= "black")
 window.geometry("500x500")
 
 
-uren = 0
-minuten = 0
-seconden = 0
-
-timer = uren, ":", minuten, ":", seconden
-
+timer= tk.StringVar(value= "loading")
 
 
 box1 = tk.Label(
@@ -23,6 +18,7 @@ box1 = tk.Label(
     text="TIMER:",
     bg="black",
     fg="white",
+    font=("Courier", 44)
 )
 
 box1.pack(
@@ -32,9 +28,10 @@ box1.pack(
 
 box2 = tk.Label(
     window,
-    text=timer,
+    textvariable= timer,
     bg="black",
     fg="white",
+    font=("Courier", 44)
 )
 
 box2.pack(
@@ -42,19 +39,18 @@ box2.pack(
     ipady=10
 )
 
+def clock():
+    global timer
+    i = 0
+    while i < 1:
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        timer.set(current_time)
+        time.sleep(1)
+
+
+threading.Timer(1.0, clock).start()
+
 window.mainloop()
 
-def secondenTimer():
-    i = 0
-    global seconden, minuten    
-    for i in range(59):
-        time.sleep(1)
-        seconden += 1
-        
-    time.sleep(1)
-    seconden = 0
-    minuten += 1
-    print(uren, ":", minuten, ":", seconden)
-    secondenTimer()
 
-secondenTimer()
